@@ -4,6 +4,8 @@
 #include <string>
 #include <vector>
 
+class Beneficios;
+
 struct Cliente {
     std::string nombre;
     double consumoAcumulado;
@@ -47,6 +49,11 @@ public:
     );
 
     void intercambiar(Clientes& otro);
+    bool canjearBeneficio(
+        const std::string& nombreCliente,
+        const std::string& nombreBeneficio,
+        const Beneficios& catalogo
+    );
     int getCantidad() const;
     const Cliente* getPrimero() const;
     void mostrarClientes() const;

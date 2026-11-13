@@ -6,6 +6,7 @@
 #include "Persistencia.h"
 #include "MenuClientes.h"
 #include "MenuBeneficios.h"
+#include "MenuCanje.h"
 
 using namespace std;
 
@@ -345,9 +346,12 @@ int main() {
 
             case 4:
             case 5:
-            case 6:
             case 7:
                 cout << "\nModulo pendiente de implementacion.\n";
+                break;
+
+            case 6:
+                menuCanje(clientes, beneficios);
                 break;
 
             case 8: {

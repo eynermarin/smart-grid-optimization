@@ -1,3 +1,4 @@
+#include "Beneficios.h"
 #include "Clientes.h"
 #include <iostream>
 #include <cmath>
@@ -201,4 +202,41 @@ bool Clientes::restaurarCliente(
 void Clientes::intercambiar(Clientes& otro) {
     swap(primero, otro.primero);
     swap(cantidad, otro.cantidad);
+}
+
+bool Clientes::canjearBeneficio(
+    const string& nombreCliente,
+    const string& nombreBeneficio,
+    const Beneficios& catalogo) {
+
+    // Verificar existencia del cliente
+    Cliente* cliente = buscarInterno(nombreCliente);
+
+    if (cliente == nullptr) {
+        return false;
+    }
+
+    // Verificar existencia del beneficio
+    const Beneficio* beneficio =
+        catalogo.buscarBeneficio(nombreBeneficio);
+
+    if (beneficio == nullptr) {
+        return false;
+    }
+
+    // Validar costo y saldo disponible
+    if (beneficio->costoTokens <= 0 ||
+        cliente->tokens < beneficio->costoTokens) {
+        return false;
+    }
+
+    // Registrar primero el beneficio en el historial
+    cliente->beneficiosCanjeados.push_back(
+        beneficio->nombre
+    );
+
+    // Descontar Eco-Tokens solamente si se registro
+    cliente->tokens -= beneficio->costoTokens;
+
+    return true;
 }
