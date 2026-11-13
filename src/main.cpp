@@ -1,12 +1,20 @@
 #include <iostream>
 #include <sstream>
 #include <string>
+#include <cmath>
 #include "Grafo.h"
 #include "Persistencia.h"
 
 using namespace std;
 
 const string ARCHIVO_RED = "data/red_electrica.json";
+
+string leerTexto(const string& mensaje) {
+    string texto;
+    cout << mensaje;
+    getline(cin, texto);
+    return texto;
+}
 
 int leerOpcion() {
     string entrada;
@@ -26,6 +34,18 @@ int leerOpcion() {
     return opcion;
 }
 
+bool leerNumero(const string& mensaje, double& valor) {
+    string entrada = leerTexto(mensaje);
+    istringstream flujo(entrada);
+
+    if (!(flujo >> valor) || !isfinite(valor)) {
+        return false;
+    }
+
+    flujo >> ws;
+    return flujo.eof();
+}
+
 void mostrarMenu() {
     cout << "\n========================================\n";
     cout << "       SMART GRID OPTIMIZATION\n";
@@ -43,6 +63,160 @@ void mostrarMenu() {
     cout << "Seleccione una opcion: ";
 }
 
+void agregarNodo(Grafo& grafo) {
+    cout << "\n===== AGREGAR NODO =====\n";
+
+    string nombre = leerTexto("Nombre: ");
+    string region = leerTexto("Region: ");
+    string tipo = leerTexto("Tipo de nodo: ");
+
+    if (grafo.agregarNodo(nombre, region, tipo)) {
+        cout << "Nodo agregado correctamente.\n";
+    } else {
+        cout << "ERROR: Datos invalidos o nodo duplicado.\n";
+    }
+}
+
+void modificarNodo(Grafo& grafo) {
+    cout << "\n===== MODIFICAR NODO =====\n";
+
+    string nombre = leerTexto("Nombre actual: ");
+    string region = leerTexto("Region actual: ");
+
+    string nuevoNombre = leerTexto("Nuevo nombre: ");
+    string nuevaRegion = leerTexto("Nueva region: ");
+    string nuevoTipo = leerTexto("Nuevo tipo: ");
+
+    if (grafo.modificarNodo(nombre, region,
+                           nuevoNombre, nuevaRegion, nuevoTipo)) {
+        cout << "Nodo modificado correctamente.\n";
+    } else {
+        cout << "ERROR: No se pudo modificar el nodo.\n";
+    }
+}
+
+void eliminarNodo(Grafo& grafo) {
+    cout << "\n===== ELIMINAR NODO =====\n";
+
+    string nombre = leerTexto("Nombre: ");
+    string region = leerTexto("Region: ");
+
+    const Nodo* nodo = grafo.buscarNodo(nombre, region);
+
+    if (nodo == nullptr) {
+        cout << "ERROR: Nodo inexistente.\n";
+        return;
+    }
+
+    string confirmar = leerTexto(
+        "Se eliminaran sus conexiones. Confirmar (s/n): "
+    );
+
+    if (confirmar != "s" && confirmar != "S") {
+        cout << "Operacion cancelada.\n";
+        return;
+    }
+
+    if (grafo.eliminarNodo(nombre, region)) {
+        cout << "Nodo y conexiones eliminados correctamente.\n";
+    } else {
+        cout << "ERROR: No se pudo eliminar el nodo.\n";
+    }
+}
+
+bool leerAtributosArco(double& distancia, double& tiempo,
+                       double& capacidad, double& perdida) {
+    if (!leerNumero("Distancia en km: ", distancia) ||
+        !leerNumero("Tiempo en ms: ", tiempo) ||
+        !leerNumero("Capacidad maxima: ", capacidad) ||
+        !leerNumero("Perdida en porcentaje: ", perdida)) {
+        cout << "ERROR: Los atributos deben ser numeros validos.\n";
+        return false;
+    }
+
+    return true;
+}
+
+void agregarConexion(Grafo& grafo) {
+    cout << "\n===== AGREGAR CONEXION =====\n";
+
+    string origen = leerTexto("Nodo origen: ");
+    string regionOrigen = leerTexto("Region origen: ");
+    string destino = leerTexto("Nodo destino: ");
+    string regionDestino = leerTexto("Region destino: ");
+    string medio = leerTexto(
+        "Medio (alta_tension/subterraneo/red_local): "
+    );
+
+    double distancia, tiempo, capacidad, perdida;
+
+    if (!leerAtributosArco(distancia, tiempo, capacidad, perdida)) {
+        return;
+    }
+
+    if (grafo.agregarArco(origen, regionOrigen,
+                         destino, regionDestino, medio,
+                         distancia, tiempo, capacidad, perdida)) {
+        cout << "Conexion agregada correctamente.\n";
+    } else {
+        cout << "ERROR: Conexion invalida o duplicada.\n";
+    }
+}
+
+void modificarConexion(Grafo& grafo) {
+    cout << "\n===== MODIFICAR CONEXION =====\n";
+
+    string origen = leerTexto("Nodo origen: ");
+    string regionOrigen = leerTexto("Region origen: ");
+    string destino = leerTexto("Nodo destino: ");
+    string regionDestino = leerTexto("Region destino: ");
+    string medio = leerTexto("Medio actual: ");
+
+    double distancia, tiempo, capacidad, perdida;
+
+    if (!leerAtributosArco(distancia, tiempo, capacidad, perdida)) {
+        return;
+    }
+
+    if (grafo.modificarArco(origen, regionOrigen,
+                           destino, regionDestino, medio,
+                           distancia, tiempo, capacidad, perdida)) {
+        cout << "Conexion modificada correctamente.\n";
+    } else {
+        cout << "ERROR: Conexion inexistente o datos invalidos.\n";
+    }
+}
+
+void eliminarConexion(Grafo& grafo) {
+    cout << "\n===== ELIMINAR CONEXION =====\n";
+
+    string origen = leerTexto("Nodo origen: ");
+    string regionOrigen = leerTexto("Region origen: ");
+    string destino = leerTexto("Nodo destino: ");
+    string regionDestino = leerTexto("Region destino: ");
+    string medio = leerTexto("Medio: ");
+
+    if (grafo.buscarArco(origen, regionOrigen,
+                        destino, regionDestino, medio) == nullptr) {
+        cout << "ERROR: Conexion inexistente.\n";
+        return;
+    }
+
+    string confirmar = leerTexto("Confirmar eliminacion (s/n): ");
+
+    if (confirmar != "s" && confirmar != "S") {
+        cout << "Operacion cancelada.\n";
+        return;
+    }
+
+    if (grafo.eliminarArco(origen, regionOrigen,
+                          destino, regionDestino, medio)) {
+        cout << "Conexion eliminada correctamente.\n";
+    } else {
+        cout << "ERROR: No se pudo eliminar la conexion.\n";
+    }
+}
+
 void menuRed(Grafo& grafo) {
     int opcion;
 
@@ -50,6 +224,12 @@ void menuRed(Grafo& grafo) {
         cout << "\n===== GESTION DE RED ELECTRICA =====\n";
         cout << "1. Mostrar nodos\n";
         cout << "2. Mostrar conexiones\n";
+        cout << "3. Agregar nodo\n";
+        cout << "4. Modificar nodo\n";
+        cout << "5. Eliminar nodo\n";
+        cout << "6. Agregar conexion\n";
+        cout << "7. Modificar conexion\n";
+        cout << "8. Eliminar conexion\n";
         cout << "0. Volver al menu principal\n";
         cout << "Seleccione una opcion: ";
 
@@ -58,20 +238,42 @@ void menuRed(Grafo& grafo) {
         switch (opcion) {
             case 1:
                 cout << "\nNODOS REGISTRADOS:\n";
-                if (grafo.getCantidadNodos() == 0) {
+                if (grafo.getCantidadNodos() == 0)
                     cout << "No hay nodos registrados.\n";
-                } else {
+                else
                     grafo.mostrarNodos();
-                }
                 break;
 
             case 2:
                 cout << "\nCONEXIONES REGISTRADAS:\n";
-                if (grafo.getCantidadArcos() == 0) {
+                if (grafo.getCantidadArcos() == 0)
                     cout << "No hay conexiones registradas.\n";
-                } else {
+                else
                     grafo.mostrarArcos();
-                }
+                break;
+
+            case 3:
+                agregarNodo(grafo);
+                break;
+
+            case 4:
+                modificarNodo(grafo);
+                break;
+
+            case 5:
+                eliminarNodo(grafo);
+                break;
+
+            case 6:
+                agregarConexion(grafo);
+                break;
+
+            case 7:
+                modificarConexion(grafo);
+                break;
+
+            case 8:
+                eliminarConexion(grafo);
                 break;
 
             case 0:
@@ -121,11 +323,10 @@ int main() {
                 break;
 
             case 8:
-                if (Persistencia::guardarRed(ARCHIVO_RED, grafo)) {
+                if (Persistencia::guardarRed(ARCHIVO_RED, grafo))
                     cout << "\nDatos guardados correctamente.\n";
-                } else {
+                else
                     cerr << "\nError al guardar los datos.\n";
-                }
                 break;
 
             case 0:
