@@ -151,3 +151,100 @@ bool Persistencia::guardarRed(const string& ruta, const Grafo& grafo) {
         return false;
     }
 }
+
+bool Persistencia::cargarClientes(
+    const string& ruta, Clientes& clientes) {
+
+    try {
+        ifstream archivo(ruta);
+
+        if (!archivo.is_open()) {
+            cerr << "No se pudo abrir: " << ruta << endl;
+            return false;
+        }
+
+        json datos;
+        archivo >> datos;
+
+        if (!datos.is_object() ||
+            !datos.contains("clientes") ||
+            !datos.at("clientes").is_array()) {
+            cerr << "Estructura de clientes invalida.\n";
+            return false;
+        }
+
+        Clientes temporal;
+
+        for (const auto& item : datos.at("clientes")) {
+            if (!item.is_object() ||
+                !item.at("consumo_acumulado").is_number() ||
+                !item.at("tokens").is_number_integer()) {
+                return false;
+            }
+
+            string nombre = item.at("nombre").get<string>();
+            double consumo = item.at("consumo_acumulado").get<double>();
+            long long tokens = item.at("tokens").get<long long>();
+
+            vector<string> subestaciones =
+                item.at("subestaciones_conectadas").get<vector<string>>();
+
+            vector<string> beneficios =
+                item.at("beneficios").get<vector<string>>();
+
+            if (!temporal.restaurarCliente(
+                nombre, consumo, tokens, subestaciones, beneficios)) {
+
+                cerr << "Cliente invalido: " << nombre << endl;
+                return false;
+            }
+        }
+
+        clientes.intercambiar(temporal);
+        return true;
+
+    } catch (const exception& e) {
+        cerr << "Error cargando clientes: " << e.what() << endl;
+        return false;
+    }
+}
+
+bool Persistencia::guardarClientes(
+    const string& ruta, const Clientes& clientes) {
+
+    try {
+        json datos;
+        datos["clientes"] = json::array();
+
+        const Cliente* actual = clientes.getPrimero();
+
+        while (actual != nullptr) {
+            datos["clientes"].push_back({
+                {"nombre", actual->nombre},
+                {"consumo_acumulado", actual->consumoAcumulado},
+                {"tokens", actual->tokens},
+                {"subestaciones_conectadas",
+                    actual->subestacionesConectadas},
+                {"beneficios", actual->beneficiosCanjeados}
+            });
+
+            actual = actual->siguiente;
+        }
+
+        ofstream archivo(ruta);
+
+        if (!archivo.is_open()) {
+            cerr << "No se pudo guardar: " << ruta << endl;
+            return false;
+        }
+
+        archivo << datos.dump(4);
+        archivo.flush();
+
+        return archivo.good();
+
+    } catch (const exception& e) {
+        cerr << "Error guardando clientes: " << e.what() << endl;
+        return false;
+    }
+}

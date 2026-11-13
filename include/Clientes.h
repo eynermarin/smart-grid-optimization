@@ -38,6 +38,15 @@ public:
     bool asignarTokens(const std::string& nombre, long long cantidad);
     bool registrarConsumo(const std::string& nombre, double consumo);
 
+    bool restaurarCliente(
+        const std::string& nombre,
+        double consumo,
+        long long tokens,
+        const std::vector<std::string>& subestaciones,
+        const std::vector<std::string>& beneficios
+    );
+
+    void intercambiar(Clientes& otro);
     int getCantidad() const;
     const Cliente* getPrimero() const;
     void mostrarClientes() const;

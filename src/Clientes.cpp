@@ -2,6 +2,8 @@
 #include <iostream>
 #include <cmath>
 #include <limits>
+#include <algorithm>
+#include <utility>
 
 using namespace std;
 
@@ -152,4 +154,51 @@ void Clientes::mostrarClientes() const {
 
         actual = actual->siguiente;
     }
+}
+bool Clientes::restaurarCliente(
+    const string& nombre,
+    double consumo,
+    long long tokens,
+    const vector<string>& subestaciones,
+    const vector<string>& beneficios) {
+
+    if (nombre.find_first_not_of(" \t\n\r") == string::npos ||
+        !isfinite(consumo) || consumo < 0 || tokens < 0 ||
+        buscarCliente(nombre) != nullptr) {
+        return false;
+    }
+
+    for (size_t i = 0; i < subestaciones.size(); i++) {
+        const string& valor = subestaciones[i];
+
+        if (valor.find_first_not_of(" \t\n\r") == string::npos ||
+            find(subestaciones.begin(), subestaciones.begin() + i,
+                 valor) != subestaciones.begin() + i) {
+            return false;
+        }
+    }
+
+    for (const string& beneficio : beneficios) {
+        if (beneficio.find_first_not_of(" \t\n\r") == string::npos) {
+            return false;
+        }
+    }
+
+    if (!agregarCliente(nombre)) {
+        return false;
+    }
+
+    Cliente* cliente = buscarInterno(nombre);
+
+    cliente->consumoAcumulado = consumo;
+    cliente->tokens = tokens;
+    cliente->subestacionesConectadas = subestaciones;
+    cliente->beneficiosCanjeados = beneficios;
+
+    return true;
+}
+
+void Clientes::intercambiar(Clientes& otro) {
+    swap(primero, otro.primero);
+    swap(cantidad, otro.cantidad);
 }

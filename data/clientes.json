@@ -1,0 +1,114 @@
+{
+    "clientes":  [
+                     {
+                         "consumo_acumulado":  150.5,
+                         "nombre":  "Hospital General",
+                         "tokens":  450,
+                         "subestaciones_conectadas":  [
+                                                          "Subestacion Central"
+                                                      ],
+                         "beneficios":  [
+
+                                        ]
+                     },
+                     {
+                         "consumo_acumulado":  230,
+                         "nombre":  "Hospital Regional",
+                         "tokens":  300,
+                         "subestaciones_conectadas":  [
+                                                          "Subestacion Sur"
+                                                      ],
+                         "beneficios":  [
+
+                                        ]
+                     },
+                     {
+                         "consumo_acumulado":  95,
+                         "nombre":  "Zona Residencial Norte",
+                         "tokens":  120,
+                         "subestaciones_conectadas":  [
+                                                          "Subestacion Central"
+                                                      ],
+                         "beneficios":  [
+
+                                        ]
+                     },
+                     {
+                         "consumo_acumulado":  110,
+                         "nombre":  "Zona Residencial Sur",
+                         "tokens":  150,
+                         "subestaciones_conectadas":  [
+                                                          "Subestacion Sur"
+                                                      ],
+                         "beneficios":  [
+
+                                        ]
+                     },
+                     {
+                         "consumo_acumulado":  800,
+                         "nombre":  "Industria Alpha",
+                         "tokens":  650,
+                         "subestaciones_conectadas":  [
+                                                          "Subestacion Central"
+                                                      ],
+                         "beneficios":  [
+
+                                        ]
+                     },
+                     {
+                         "consumo_acumulado":  620,
+                         "nombre":  "Industria Beta",
+                         "tokens":  420,
+                         "subestaciones_conectadas":  [
+                                                          "Subestacion Sur"
+                                                      ],
+                         "beneficios":  [
+
+                                        ]
+                     },
+                     {
+                         "consumo_acumulado":  350,
+                         "nombre":  "Centro Comercial Norte",
+                         "tokens":  200,
+                         "subestaciones_conectadas":  [
+                                                          "Subestacion Central"
+                                                      ],
+                         "beneficios":  [
+
+                                        ]
+                     },
+                     {
+                         "consumo_acumulado":  125,
+                         "nombre":  "Centro Educativo",
+                         "tokens":  90,
+                         "subestaciones_conectadas":  [
+                                                          "Subestacion Sur"
+                                                      ],
+                         "beneficios":  [
+
+                                        ]
+                     },
+                     {
+                         "consumo_acumulado":  740,
+                         "nombre":  "Zona Industrial Sur",
+                         "tokens":  500,
+                         "subestaciones_conectadas":  [
+                                                          "Subestacion Central"
+                                                      ],
+                         "beneficios":  [
+
+                                        ]
+                     },
+                     {
+                         "consumo_acumulado":  85,
+                         "nombre":  "Clinica Comunitaria",
+                         "tokens":  75,
+                         "subestaciones_conectadas":  [
+                                                          "Subestacion Sur"
+                                                      ],
+                         "beneficios":  [
+
+                                        ]
+                     }
+                 ]
+}
