@@ -1,0 +1,58 @@
+{
+    "regiones":  [
+                     {
+                         "nombre":  "Zona Norte",
+                         "puntos_interconexion":  [
+                                                      {
+                                                          "nombre":  "Planta Solar Alpha",
+                                                          "tipo":  "generador"
+                                                      },
+                                                      {
+                                                          "nombre":  "Subestacion Central",
+                                                          "tipo":  "subestacion"
+                                                      }
+                                                  ]
+                     },
+                     {
+                         "nombre":  "Zona Sur",
+                         "puntos_interconexion":  [
+                                                      {
+                                                          "nombre":  "Subestacion Sur",
+                                                          "tipo":  "subestacion"
+                                                      }
+                                                  ]
+                     }
+                 ],
+    "lineas_transmision":  [
+                               {
+                                   "destino":  {
+                                                   "region":  "Zona Norte",
+                                                   "punto":  "Subestacion Central"
+                                               },
+                                   "distancia_km":  45,
+                                   "origen":  {
+                                                  "region":  "Zona Norte",
+                                                  "punto":  "Planta Solar Alpha"
+                                              },
+                                   "tiempo_ms":  10,
+                                   "perdida_porcentaje":  2.5,
+                                   "capacidad_maxima":  100,
+                                   "medio":  "alta_tension"
+                               },
+                               {
+                                   "destino":  {
+                                                   "region":  "Zona Sur",
+                                                   "punto":  "Subestacion Sur"
+                                               },
+                                   "distancia_km":  70,
+                                   "origen":  {
+                                                  "region":  "Zona Norte",
+                                                  "punto":  "Subestacion Central"
+                                              },
+                                   "tiempo_ms":  15,
+                                   "perdida_porcentaje":  3,
+                                   "capacidad_maxima":  80,
+                                   "medio":  "subterraneo"
+                               }
+                           ]
+}

@@ -1,4 +1,4 @@
-﻿#ifndef GRAFO_H
+#ifndef GRAFO_H
 #define GRAFO_H
 
 #include <string>
@@ -88,10 +88,14 @@ public:
     void mostrarNodos() const;
     void mostrarArcos() const;
 
+    const Nodo* getPrimerNodo() const;
+    const Arco* getPrimerArco() const;
+    void intercambiar(Grafo& otro);
     int getCantidadNodos() const;
     int getCantidadArcos() const;
 };
 
 #endif
+
 
 

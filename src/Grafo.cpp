@@ -1,6 +1,7 @@
-﻿#include "Grafo.h"
+#include "Grafo.h"
 #include <iostream>
 #include <cmath>
+#include <utility>
 
 using namespace std;
 
@@ -344,3 +345,18 @@ int Grafo::getCantidadArcos() const {
     return cantidadArcos;
 }
 
+
+const Nodo* Grafo::getPrimerNodo() const {
+    return primero;
+}
+
+const Arco* Grafo::getPrimerArco() const {
+    return primerArco;
+}
+
+void Grafo::intercambiar(Grafo& otro) {
+    swap(primero, otro.primero);
+    swap(primerArco, otro.primerArco);
+    swap(cantidadNodos, otro.cantidadNodos);
+    swap(cantidadArcos, otro.cantidadArcos);
+}
