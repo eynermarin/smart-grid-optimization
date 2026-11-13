@@ -1,58 +1,376 @@
 {
-    "lineas_transmision": [
-        {
-            "capacidad_maxima": 80.0,
-            "destino": {
-                "punto": "Subestacion Sur",
-                "region": "Zona Sur"
-            },
-            "distancia_km": 70.0,
-            "medio": "subterraneo",
-            "origen": {
-                "punto": "Subestacion Central",
-                "region": "Zona Norte"
-            },
-            "perdida_porcentaje": 3.0,
-            "tiempo_ms": 15.0
-        },
-        {
-            "capacidad_maxima": 100.0,
-            "destino": {
-                "punto": "Subestacion Central",
-                "region": "Zona Norte"
-            },
-            "distancia_km": 45.0,
-            "medio": "alta_tension",
-            "origen": {
-                "punto": "Planta Solar Alpha",
-                "region": "Zona Norte"
-            },
-            "perdida_porcentaje": 2.5,
-            "tiempo_ms": 10.0
-        }
-    ],
-    "regiones": [
-        {
-            "nombre": "Zona Norte",
-            "puntos_interconexion": [
-                {
-                    "nombre": "Subestacion Central",
-                    "tipo": "subestacion"
-                },
-                {
-                    "nombre": "Planta Solar Alpha",
-                    "tipo": "generador"
-                }
-            ]
-        },
-        {
-            "nombre": "Zona Sur",
-            "puntos_interconexion": [
-                {
-                    "nombre": "Subestacion Sur",
-                    "tipo": "subestacion"
-                }
-            ]
-        }
-    ]
+    "lineas_transmision":  [
+                               {
+                                   "capacidad_maxima":  80.0,
+                                   "destino":  {
+                                                   "punto":  "Subestacion Sur",
+                                                   "region":  "Zona Sur"
+                                               },
+                                   "distancia_km":  70.0,
+                                   "medio":  "subterraneo",
+                                   "origen":  {
+                                                  "punto":  "Subestacion Central",
+                                                  "region":  "Zona Norte"
+                                              },
+                                   "perdida_porcentaje":  3.0,
+                                   "tiempo_ms":  15.0
+                               },
+                               {
+                                   "capacidad_maxima":  100.0,
+                                   "destino":  {
+                                                   "punto":  "Subestacion Central",
+                                                   "region":  "Zona Norte"
+                                               },
+                                   "distancia_km":  45.0,
+                                   "medio":  "alta_tension",
+                                   "origen":  {
+                                                  "punto":  "Planta Solar Alpha",
+                                                  "region":  "Zona Norte"
+                                              },
+                                   "perdida_porcentaje":  2.5,
+                                   "tiempo_ms":  10.0
+                               },
+                               {
+                                   "capacidad_maxima":  120,
+                                   "destino":  {
+                                                   "punto":  "Subestacion Norte 1",
+                                                   "region":  "Zona Norte"
+                                               },
+                                   "distancia_km":  20,
+                                   "medio":  "alta_tension",
+                                   "origen":  {
+                                                  "punto":  "Planta Solar Alpha",
+                                                  "region":  "Zona Norte"
+                                              },
+                                   "perdida_porcentaje":  1.2,
+                                   "tiempo_ms":  5
+                               },
+                               {
+                                   "capacidad_maxima":  110,
+                                   "destino":  {
+                                                   "punto":  "Subestacion Norte 1",
+                                                   "region":  "Zona Norte"
+                                               },
+                                   "distancia_km":  18,
+                                   "medio":  "alta_tension",
+                                   "origen":  {
+                                                  "punto":  "Planta Eolica Norte",
+                                                  "region":  "Zona Norte"
+                                              },
+                                   "perdida_porcentaje":  1,
+                                   "tiempo_ms":  4
+                               },
+                               {
+                                   "capacidad_maxima":  130,
+                                   "destino":  {
+                                                   "punto":  "Subestacion Norte 2",
+                                                   "region":  "Zona Norte"
+                                               },
+                                   "distancia_km":  22,
+                                   "medio":  "subterraneo",
+                                   "origen":  {
+                                                  "punto":  "Planta Hidroelectrica Norte",
+                                                  "region":  "Zona Norte"
+                                              },
+                                   "perdida_porcentaje":  1.4,
+                                   "tiempo_ms":  6
+                               },
+                               {
+                                   "capacidad_maxima":  100,
+                                   "destino":  {
+                                                   "punto":  "Subestacion Norte 1",
+                                                   "region":  "Zona Norte"
+                                               },
+                                   "distancia_km":  16,
+                                   "medio":  "subterraneo",
+                                   "origen":  {
+                                                  "punto":  "Subestacion Central",
+                                                  "region":  "Zona Norte"
+                                              },
+                                   "perdida_porcentaje":  0.8,
+                                   "tiempo_ms":  4
+                               },
+                               {
+                                   "capacidad_maxima":  90,
+                                   "destino":  {
+                                                   "punto":  "Subestacion Norte 2",
+                                                   "region":  "Zona Norte"
+                                               },
+                                   "distancia_km":  12,
+                                   "medio":  "alta_tension",
+                                   "origen":  {
+                                                  "punto":  "Subestacion Norte 1",
+                                                  "region":  "Zona Norte"
+                                              },
+                                   "perdida_porcentaje":  0.7,
+                                   "tiempo_ms":  3
+                               },
+                               {
+                                   "capacidad_maxima":  85,
+                                   "destino":  {
+                                                   "punto":  "Subestacion Norte 3",
+                                                   "region":  "Zona Norte"
+                                               },
+                                   "distancia_km":  14,
+                                   "medio":  "subterraneo",
+                                   "origen":  {
+                                                  "punto":  "Subestacion Norte 2",
+                                                  "region":  "Zona Norte"
+                                              },
+                                   "perdida_porcentaje":  0.9,
+                                   "tiempo_ms":  4
+                               },
+                               {
+                                   "capacidad_maxima":  80,
+                                   "destino":  {
+                                                   "punto":  "Subestacion Norte 4",
+                                                   "region":  "Zona Norte"
+                                               },
+                                   "distancia_km":  17,
+                                   "medio":  "alta_tension",
+                                   "origen":  {
+                                                  "punto":  "Subestacion Norte 3",
+                                                  "region":  "Zona Norte"
+                                              },
+                                   "perdida_porcentaje":  1.1,
+                                   "tiempo_ms":  5
+                               },
+                               {
+                                   "capacidad_maxima":  75,
+                                   "destino":  {
+                                                   "punto":  "Subestacion Sur 1",
+                                                   "region":  "Zona Sur"
+                                               },
+                                   "distancia_km":  28,
+                                   "medio":  "subterraneo",
+                                   "origen":  {
+                                                  "punto":  "Subestacion Norte 4",
+                                                  "region":  "Zona Norte"
+                                              },
+                                   "perdida_porcentaje":  1.8,
+                                   "tiempo_ms":  7
+                               },
+                               {
+                                   "capacidad_maxima":  100,
+                                   "destino":  {
+                                                   "punto":  "Subestacion Sur 2",
+                                                   "region":  "Zona Sur"
+                                               },
+                                   "distancia_km":  62,
+                                   "medio":  "alta_tension",
+                                   "origen":  {
+                                                  "punto":  "Subestacion Central",
+                                                  "region":  "Zona Norte"
+                                              },
+                                   "perdida_porcentaje":  2.6,
+                                   "tiempo_ms":  12
+                               },
+                               {
+                                   "capacidad_maxima":  60,
+                                   "destino":  {
+                                                   "punto":  "Subestacion Sur 1",
+                                                   "region":  "Zona Sur"
+                                               },
+                                   "distancia_km":  9,
+                                   "medio":  "red_local",
+                                   "origen":  {
+                                                  "punto":  "Subestacion Sur",
+                                                  "region":  "Zona Sur"
+                                              },
+                                   "perdida_porcentaje":  0.5,
+                                   "tiempo_ms":  3
+                               },
+                               {
+                                   "capacidad_maxima":  60,
+                                   "destino":  {
+                                                   "punto":  "Subestacion Sur 2",
+                                                   "region":  "Zona Sur"
+                                               },
+                                   "distancia_km":  11,
+                                   "medio":  "red_local",
+                                   "origen":  {
+                                                  "punto":  "Subestacion Sur 1",
+                                                  "region":  "Zona Sur"
+                                              },
+                                   "perdida_porcentaje":  0.6,
+                                   "tiempo_ms":  3
+                               },
+                               {
+                                   "capacidad_maxima":  75,
+                                   "destino":  {
+                                                   "punto":  "Subestacion Sur 3",
+                                                   "region":  "Zona Sur"
+                                               },
+                                   "distancia_km":  13,
+                                   "medio":  "subterraneo",
+                                   "origen":  {
+                                                  "punto":  "Subestacion Sur 2",
+                                                  "region":  "Zona Sur"
+                                              },
+                                   "perdida_porcentaje":  0.8,
+                                   "tiempo_ms":  4
+                               },
+                               {
+                                   "capacidad_maxima":  55,
+                                   "destino":  {
+                                                   "punto":  "Subestacion Sur 4",
+                                                   "region":  "Zona Sur"
+                                               },
+                                   "distancia_km":  10,
+                                   "medio":  "red_local",
+                                   "origen":  {
+                                                  "punto":  "Subestacion Sur 3",
+                                                  "region":  "Zona Sur"
+                                              },
+                                   "perdida_porcentaje":  0.5,
+                                   "tiempo_ms":  3
+                               },
+                               {
+                                   "capacidad_maxima":  55,
+                                   "destino":  {
+                                                   "punto":  "Subestacion Sur 5",
+                                                   "region":  "Zona Sur"
+                                               },
+                                   "distancia_km":  12,
+                                   "medio":  "red_local",
+                                   "origen":  {
+                                                  "punto":  "Subestacion Sur 4",
+                                                  "region":  "Zona Sur"
+                                              },
+                                   "perdida_porcentaje":  0.7,
+                                   "tiempo_ms":  4
+                               },
+                               {
+                                   "capacidad_maxima":  100,
+                                   "destino":  {
+                                                   "punto":  "Subestacion Sur 3",
+                                                   "region":  "Zona Sur"
+                                               },
+                                   "distancia_km":  19,
+                                   "medio":  "alta_tension",
+                                   "origen":  {
+                                                  "punto":  "Planta Solar Sur",
+                                                  "region":  "Zona Sur"
+                                              },
+                                   "perdida_porcentaje":  1.1,
+                                   "tiempo_ms":  5
+                               },
+                               {
+                                   "capacidad_maxima":  90,
+                                   "destino":  {
+                                                   "punto":  "Subestacion Sur 4",
+                                                   "region":  "Zona Sur"
+                                               },
+                                   "distancia_km":  48,
+                                   "medio":  "alta_tension",
+                                   "origen":  {
+                                                  "punto":  "Subestacion Norte 2",
+                                                  "region":  "Zona Norte"
+                                              },
+                                   "perdida_porcentaje":  2.2,
+                                   "tiempo_ms":  10
+                               },
+                               {
+                                   "capacidad_maxima":  70,
+                                   "destino":  {
+                                                   "punto":  "Subestacion Norte 3",
+                                                   "region":  "Zona Norte"
+                                               },
+                                   "distancia_km":  37,
+                                   "medio":  "subterraneo",
+                                   "origen":  {
+                                                  "punto":  "Subestacion Sur 2",
+                                                  "region":  "Zona Sur"
+                                              },
+                                   "perdida_porcentaje":  1.9,
+                                   "tiempo_ms":  8
+                               },
+                               {
+                                   "capacidad_maxima":  80,
+                                   "destino":  {
+                                                   "punto":  "Subestacion Sur 5",
+                                                   "region":  "Zona Sur"
+                                               },
+                                   "distancia_km":  53,
+                                   "medio":  "alta_tension",
+                                   "origen":  {
+                                                  "punto":  "Subestacion Norte 4",
+                                                  "region":  "Zona Norte"
+                                              },
+                                   "perdida_porcentaje":  2.4,
+                                   "tiempo_ms":  11
+                               }
+                           ],
+    "regiones":  [
+                     {
+                         "nombre":  "Zona Norte",
+                         "puntos_interconexion":  [
+                                                      {
+                                                          "nombre":  "Subestacion Central",
+                                                          "tipo":  "subestacion"
+                                                      },
+                                                      {
+                                                          "nombre":  "Planta Solar Alpha",
+                                                          "tipo":  "generador"
+                                                      },
+                                                      {
+                                                          "nombre":  "Planta Eolica Norte",
+                                                          "tipo":  "generador"
+                                                      },
+                                                      {
+                                                          "nombre":  "Planta Hidroelectrica Norte",
+                                                          "tipo":  "generador"
+                                                      },
+                                                      {
+                                                          "nombre":  "Subestacion Norte 1",
+                                                          "tipo":  "subestacion"
+                                                      },
+                                                      {
+                                                          "nombre":  "Subestacion Norte 2",
+                                                          "tipo":  "subestacion"
+                                                      },
+                                                      {
+                                                          "nombre":  "Subestacion Norte 3",
+                                                          "tipo":  "subestacion"
+                                                      },
+                                                      {
+                                                          "nombre":  "Subestacion Norte 4",
+                                                          "tipo":  "subestacion"
+                                                      }
+                                                  ]
+                     },
+                     {
+                         "nombre":  "Zona Sur",
+                         "puntos_interconexion":  [
+                                                      {
+                                                          "nombre":  "Subestacion Sur",
+                                                          "tipo":  "subestacion"
+                                                      },
+                                                      {
+                                                          "nombre":  "Planta Solar Sur",
+                                                          "tipo":  "generador"
+                                                      },
+                                                      {
+                                                          "nombre":  "Subestacion Sur 1",
+                                                          "tipo":  "subestacion"
+                                                      },
+                                                      {
+                                                          "nombre":  "Subestacion Sur 2",
+                                                          "tipo":  "subestacion"
+                                                      },
+                                                      {
+                                                          "nombre":  "Subestacion Sur 3",
+                                                          "tipo":  "subestacion"
+                                                      },
+                                                      {
+                                                          "nombre":  "Subestacion Sur 4",
+                                                          "tipo":  "subestacion"
+                                                      },
+                                                      {
+                                                          "nombre":  "Subestacion Sur 5",
+                                                          "tipo":  "subestacion"
+                                                      }
+                                                  ]
+                     }
+                 ]
 }
