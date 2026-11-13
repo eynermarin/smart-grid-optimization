@@ -4,10 +4,12 @@
 #include <cmath>
 #include "Grafo.h"
 #include "Persistencia.h"
+#include "MenuClientes.h"
 
 using namespace std;
 
 const string ARCHIVO_RED = "data/red_electrica.json";
+const string ARCHIVO_CLIENTES = "data/clientes.json";
 
 string leerTexto(const string& mensaje) {
     string texto;
@@ -289,6 +291,7 @@ void menuRed(Grafo& grafo) {
 
 int main() {
     Grafo grafo;
+    Clientes clientes;
 
     cout << "Iniciando Smart Grid Optimization...\n";
 
@@ -302,6 +305,14 @@ int main() {
     cout << "Nodos: " << grafo.getCantidadNodos() << '\n';
     cout << "Conexiones: " << grafo.getCantidadArcos() << '\n';
 
+    if (!Persistencia::cargarClientes(ARCHIVO_CLIENTES, clientes)) {
+        cerr << "ERROR: No se pudo cargar clientes.json.\n";
+        return 1;
+    }
+
+    cout << "Clientes cargados: "
+         << clientes.getCantidad() << '\n';
+
     int opcion;
 
     do {
@@ -314,6 +325,9 @@ int main() {
                 break;
 
             case 2:
+                menuClientes(clientes);
+                break;
+
             case 3:
             case 4:
             case 5:
@@ -322,17 +336,33 @@ int main() {
                 cout << "\nModulo pendiente de implementacion.\n";
                 break;
 
-            case 8:
-                if (Persistencia::guardarRed(ARCHIVO_RED, grafo))
+            case 8: {
+                bool redGuardada =
+                    Persistencia::guardarRed(ARCHIVO_RED, grafo);
+
+                bool clientesGuardados =
+                    Persistencia::guardarClientes(
+                        ARCHIVO_CLIENTES, clientes);
+
+                if (redGuardada && clientesGuardados)
                     cout << "\nDatos guardados correctamente.\n";
                 else
                     cerr << "\nError al guardar los datos.\n";
-                break;
 
-            case 0:
+                break;
+            }
+
+            case 0: {
                 cout << "\nGuardando datos antes de salir...\n";
 
-                if (!Persistencia::guardarRed(ARCHIVO_RED, grafo)) {
+                bool redGuardada =
+                    Persistencia::guardarRed(ARCHIVO_RED, grafo);
+
+                bool clientesGuardados =
+                    Persistencia::guardarClientes(
+                        ARCHIVO_CLIENTES, clientes);
+
+                if (!redGuardada || !clientesGuardados) {
                     cerr << "Error al guardar los datos.\n";
                     return 1;
                 }
@@ -340,6 +370,7 @@ int main() {
                 cout << "Datos guardados correctamente.\n";
                 cout << "Saliendo de Smart Grid...\n";
                 break;
+            }
 
             default:
                 cout << "\nOpcion invalida.\n";
