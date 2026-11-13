@@ -1,0 +1,29 @@
+{
+    "beneficios":  [
+                       {
+                           "descripcion":  "Descuento promocional en la factura electrica",
+                           "nombre":  "Descuento de energia",
+                           "costo_tokens":  100
+                       },
+                       {
+                           "descripcion":  "Revision preventiva de la instalacion",
+                           "nombre":  "Revision tecnica",
+                           "costo_tokens":  200
+                       },
+                       {
+                           "descripcion":  "Orientacion para mejorar el uso de electricidad",
+                           "nombre":  "Asesoria energetica",
+                           "costo_tokens":  150
+                       },
+                       {
+                           "descripcion":  "Kit promocional de eficiencia energetica",
+                           "nombre":  "Kit de ahorro",
+                           "costo_tokens":  300
+                       },
+                       {
+                           "descripcion":  "Prioridad en solicitudes de asistencia",
+                           "nombre":  "Atencion prioritaria",
+                           "costo_tokens":  250
+                       }
+                   ]
+}

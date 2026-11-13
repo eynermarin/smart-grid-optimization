@@ -5,11 +5,13 @@
 #include "Grafo.h"
 #include "Persistencia.h"
 #include "MenuClientes.h"
+#include "MenuBeneficios.h"
 
 using namespace std;
 
 const string ARCHIVO_RED = "data/red_electrica.json";
 const string ARCHIVO_CLIENTES = "data/clientes.json";
+const string ARCHIVO_BENEFICIOS = "data/beneficios.json";
 
 string leerTexto(const string& mensaje) {
     string texto;
@@ -292,6 +294,7 @@ void menuRed(Grafo& grafo) {
 int main() {
     Grafo grafo;
     Clientes clientes;
+    Beneficios beneficios;
 
     cout << "Iniciando Smart Grid Optimization...\n";
 
@@ -313,6 +316,14 @@ int main() {
     cout << "Clientes cargados: "
          << clientes.getCantidad() << '\n';
 
+    if (!Persistencia::cargarBeneficios(
+            ARCHIVO_BENEFICIOS, beneficios)) {
+        cerr << "ERROR: No se pudo cargar beneficios.json.\n";
+        return 1;
+    }
+
+    cout << "Beneficios cargados: "
+         << beneficios.getCantidad() << '\n';
     int opcion;
 
     do {
@@ -329,6 +340,9 @@ int main() {
                 break;
 
             case 3:
+                menuBeneficios(beneficios);
+                break;
+
             case 4:
             case 5:
             case 6:
@@ -344,7 +358,11 @@ int main() {
                     Persistencia::guardarClientes(
                         ARCHIVO_CLIENTES, clientes);
 
-                if (redGuardada && clientesGuardados)
+                bool beneficiosGuardados =
+                    Persistencia::guardarBeneficios(
+                        ARCHIVO_BENEFICIOS, beneficios);
+
+                if (redGuardada && clientesGuardados && beneficiosGuardados)
                     cout << "\nDatos guardados correctamente.\n";
                 else
                     cerr << "\nError al guardar los datos.\n";
@@ -362,7 +380,11 @@ int main() {
                     Persistencia::guardarClientes(
                         ARCHIVO_CLIENTES, clientes);
 
-                if (!redGuardada || !clientesGuardados) {
+                bool beneficiosGuardados =
+                    Persistencia::guardarBeneficios(
+                        ARCHIVO_BENEFICIOS, beneficios);
+
+                if (!redGuardada || !clientesGuardados || !beneficiosGuardados) {
                     cerr << "Error al guardar los datos.\n";
                     return 1;
                 }

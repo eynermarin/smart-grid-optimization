@@ -248,3 +248,108 @@ bool Persistencia::guardarClientes(
         return false;
     }
 }
+
+bool Persistencia::cargarBeneficios(
+    const std::string& ruta,
+    Beneficios& beneficios) {
+
+    try {
+        std::ifstream archivo(ruta);
+
+        if (!archivo.is_open()) {
+            std::cerr << "No se pudo abrir: " << ruta << '\n';
+            return false;
+        }
+
+        nlohmann::json datos;
+        archivo >> datos;
+
+        if (!datos.is_object() ||
+            !datos.contains("beneficios") ||
+            !datos.at("beneficios").is_array()) {
+
+            std::cerr << "Estructura de beneficios invalida.\n";
+            return false;
+        }
+
+        Beneficios temporal;
+
+        for (const auto& item : datos.at("beneficios")) {
+            if (!item.is_object() ||
+                !item.contains("nombre") ||
+                !item.contains("descripcion") ||
+                !item.contains("costo_tokens") ||
+                !item.at("nombre").is_string() ||
+                !item.at("descripcion").is_string() ||
+                !item.at("costo_tokens").is_number_integer()) {
+
+                std::cerr << "Registro de beneficio invalido.\n";
+                return false;
+            }
+
+            std::string nombre =
+                item.at("nombre").get<std::string>();
+
+            std::string descripcion =
+                item.at("descripcion").get<std::string>();
+
+            long long costo =
+                item.at("costo_tokens").get<long long>();
+
+            if (!temporal.agregarBeneficio(
+                nombre, descripcion, costo)) {
+
+                std::cerr << "Beneficio invalido: "
+                          << nombre << '\n';
+                return false;
+            }
+        }
+
+        beneficios.intercambiar(temporal);
+        return true;
+
+    } catch (const std::exception& error) {
+        std::cerr << "Error cargando beneficios: "
+                  << error.what() << '\n';
+        return false;
+    }
+}
+
+bool Persistencia::guardarBeneficios(
+    const std::string& ruta,
+    const Beneficios& beneficios) {
+
+    try {
+        nlohmann::json datos;
+        datos["beneficios"] = nlohmann::json::array();
+
+        const Beneficio* actual = beneficios.getPrimero();
+
+        while (actual != nullptr) {
+            datos["beneficios"].push_back({
+                {"nombre", actual->nombre},
+                {"descripcion", actual->descripcion},
+                {"costo_tokens", actual->costoTokens}
+            });
+
+            actual = actual->siguiente;
+        }
+
+        std::ofstream archivo(ruta);
+
+        if (!archivo.is_open()) {
+            std::cerr << "No se pudo guardar: " << ruta << '\n';
+            return false;
+        }
+
+        archivo << datos.dump(4);
+        archivo.flush();
+
+        return archivo.good();
+
+    } catch (const std::exception& error) {
+        std::cerr << "Error guardando beneficios: "
+                  << error.what() << '\n';
+        return false;
+    }
+}
