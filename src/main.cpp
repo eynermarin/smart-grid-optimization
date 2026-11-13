@@ -7,6 +7,7 @@
 #include "MenuClientes.h"
 #include "MenuBeneficios.h"
 #include "MenuCanje.h"
+#include "MenuRecorridos.h"
 
 using namespace std;
 
@@ -345,6 +346,9 @@ int main() {
                 break;
 
             case 4:
+                menuRecorridos(grafo);
+                break;
+
             case 5:
             case 7:
                 cout << "\nModulo pendiente de implementacion.\n";
