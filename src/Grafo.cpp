@@ -145,6 +145,168 @@ bool Grafo::agregarArco(
     return true;
 }
 
+bool Grafo::modificarNodo(
+    string nombre, string region,
+    string nuevoNombre, string nuevaRegion,
+    string nuevoTipo) {
+
+    Nodo* nodo = buscarNodoInterno(nombre, region);
+
+    if (nodo == nullptr || nuevoNombre.empty() ||
+        nuevaRegion.empty() || nuevoTipo.empty()) {
+        return false;
+    }
+
+    Nodo* duplicado = buscarNodoInterno(nuevoNombre, nuevaRegion);
+
+    if (duplicado != nullptr && duplicado != nodo) {
+        return false;
+    }
+
+    nodo->nombre = nuevoNombre;
+    nodo->region = nuevaRegion;
+    nodo->tipo = nuevoTipo;
+
+    return true;
+}
+
+void Grafo::eliminarArcoInterno(Arco* arco) {
+    if (arco == nullptr) {
+        return;
+    }
+
+    // Desenlazar de las conexiones salientes
+    Arco** enlace = &arco->origen->primerSaliente;
+
+    while (*enlace != nullptr && *enlace != arco) {
+        enlace = &((*enlace)->siguienteSaliente);
+    }
+
+    if (*enlace == arco) {
+        *enlace = arco->siguienteSaliente;
+    }
+
+    // Desenlazar de las conexiones entrantes
+    enlace = &arco->destino->primerEntrante;
+
+    while (*enlace != nullptr && *enlace != arco) {
+        enlace = &((*enlace)->siguienteEntrante);
+    }
+
+    if (*enlace == arco) {
+        *enlace = arco->siguienteEntrante;
+    }
+
+    // Desenlazar de la lista global de arcos
+    enlace = &primerArco;
+
+    while (*enlace != nullptr && *enlace != arco) {
+        enlace = &((*enlace)->siguienteGlobal);
+    }
+
+    if (*enlace == arco) {
+        *enlace = arco->siguienteGlobal;
+    }
+
+    delete arco;
+    cantidadArcos--;
+}
+
+bool Grafo::eliminarArco(
+    string origen, string regionOrigen,
+    string destino, string regionDestino,
+    string medio) {
+
+    Arco* actual = primerArco;
+
+    while (actual != nullptr) {
+        if (actual->origen->nombre == origen &&
+            actual->origen->region == regionOrigen &&
+            actual->destino->nombre == destino &&
+            actual->destino->region == regionDestino &&
+            actual->medio == medio) {
+
+            eliminarArcoInterno(actual);
+            return true;
+        }
+
+        actual = actual->siguienteGlobal;
+    }
+
+    return false;
+}
+
+bool Grafo::eliminarNodo(string nombre, string region) {
+    Nodo** enlace = &primero;
+
+    while (*enlace != nullptr &&
+           ((*enlace)->nombre != nombre ||
+            (*enlace)->region != region)) {
+        enlace = &((*enlace)->siguiente);
+    }
+
+    if (*enlace == nullptr) {
+        return false;
+    }
+
+    Nodo* nodo = *enlace;
+
+    // Eliminar primero todas las conexiones asociadas
+    Arco* actual = primerArco;
+
+    while (actual != nullptr) {
+        Arco* siguiente = actual->siguienteGlobal;
+
+        if (actual->origen == nodo || actual->destino == nodo) {
+            eliminarArcoInterno(actual);
+        }
+
+        actual = siguiente;
+    }
+
+    // Ahora es seguro eliminar el nodo
+    *enlace = nodo->siguiente;
+    delete nodo;
+    cantidadNodos--;
+
+    return true;
+}
+
+bool Grafo::modificarArco(
+    string origen, string regionOrigen,
+    string destino, string regionDestino,
+    string medio, double distancia,
+    double tiempo, double capacidad, double perdida) {
+
+    if (!isfinite(distancia) || !isfinite(tiempo) ||
+        !isfinite(capacidad) || !isfinite(perdida) ||
+        distancia <= 0 || tiempo < 0 ||
+        capacidad <= 0 || perdida < 0 || perdida > 100) {
+        return false;
+    }
+
+    Arco* actual = primerArco;
+
+    while (actual != nullptr) {
+        if (actual->origen->nombre == origen &&
+            actual->origen->region == regionOrigen &&
+            actual->destino->nombre == destino &&
+            actual->destino->region == regionDestino &&
+            actual->medio == medio) {
+
+            actual->distanciaKm = distancia;
+            actual->tiempoMs = tiempo;
+            actual->capacidadMaxima = capacidad;
+            actual->perdidaPorcentaje = perdida;
+
+            return true;
+        }
+
+        actual = actual->siguienteGlobal;
+    }
+
+    return false;
+}
 void Grafo::mostrarNodos() const {
     const Nodo* actual = primero;
 
@@ -181,3 +343,4 @@ int Grafo::getCantidadNodos() const {
 int Grafo::getCantidadArcos() const {
     return cantidadArcos;
 }
+

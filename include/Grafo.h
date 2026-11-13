@@ -47,6 +47,8 @@ private:
     Nodo* buscarNodoInterno(std::string nombre,
                             std::string region) const;
 
+    void eliminarArcoInterno(Arco* arco);
+
 public:
     Grafo();
     ~Grafo();
@@ -69,6 +71,20 @@ public:
                           std::string destino, std::string regionDestino,
                           std::string medio) const;
 
+    bool modificarNodo(std::string nombre, std::string region,
+                       std::string nuevoNombre, std::string nuevaRegion,
+                       std::string nuevoTipo);
+
+    bool eliminarNodo(std::string nombre, std::string region);
+
+    bool modificarArco(std::string origen, std::string regionOrigen,
+                       std::string destino, std::string regionDestino,
+                       std::string medio, double distancia,
+                       double tiempo, double capacidad, double perdida);
+
+    bool eliminarArco(std::string origen, std::string regionOrigen,
+                      std::string destino, std::string regionDestino,
+                      std::string medio);
     void mostrarNodos() const;
     void mostrarArcos() const;
 
@@ -77,3 +93,5 @@ public:
 };
 
 #endif
+
+
