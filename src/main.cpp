@@ -1,7 +1,30 @@
-
 #include <iostream>
-#include <limits>
+#include <sstream>
+#include <string>
+#include "Grafo.h"
+#include "Persistencia.h"
+
 using namespace std;
+
+const string ARCHIVO_RED = "data/red_electrica.json";
+
+int leerOpcion() {
+    string entrada;
+    int opcion;
+    char extra;
+
+    if (!getline(cin, entrada)) {
+        return 0;
+    }
+
+    istringstream flujo(entrada);
+
+    if (!(flujo >> opcion) || (flujo >> extra)) {
+        return -1;
+    }
+
+    return opcion;
+}
 
 void mostrarMenu() {
     cout << "\n========================================\n";
@@ -20,58 +43,105 @@ void mostrarMenu() {
     cout << "Seleccione una opcion: ";
 }
 
-int main() {
-    int opcion = -1;
+void menuRed(Grafo& grafo) {
+    int opcion;
 
     do {
-        mostrarMenu();
+        cout << "\n===== GESTION DE RED ELECTRICA =====\n";
+        cout << "1. Mostrar nodos\n";
+        cout << "2. Mostrar conexiones\n";
+        cout << "0. Volver al menu principal\n";
+        cout << "Seleccione una opcion: ";
 
-        if (!(cin >> opcion)) {
-            cin.clear();
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            cout << "\nError: ingrese un numero valido.\n";
-            continue;
-        }
+        opcion = leerOpcion();
 
         switch (opcion) {
             case 1:
-                cout << "\nGestion de nodos y conexiones.\n";
+                cout << "\nNODOS REGISTRADOS:\n";
+                if (grafo.getCantidadNodos() == 0) {
+                    cout << "No hay nodos registrados.\n";
+                } else {
+                    grafo.mostrarNodos();
+                }
                 break;
 
             case 2:
-                cout << "\nGestion de clientes.\n";
-                break;
-
-            case 3:
-                cout << "\nGestion de beneficios.\n";
-                break;
-
-            case 4:
-                cout << "\nRecorridos BFS y DFS.\n";
-                break;
-
-            case 5:
-                cout << "\nConsultas de rutas posibles y optimas.\n";
-                break;
-
-            case 6:
-                cout << "\nGestion de Eco-Tokens y canjes.\n";
-                break;
-
-            case 7:
-                cout << "\nReportes del sistema.\n";
-                break;
-
-            case 8:
-                cout << "\nGuardado de archivos JSON.\n";
+                cout << "\nCONEXIONES REGISTRADAS:\n";
+                if (grafo.getCantidadArcos() == 0) {
+                    cout << "No hay conexiones registradas.\n";
+                } else {
+                    grafo.mostrarArcos();
+                }
                 break;
 
             case 0:
-                cout << "\nSaliendo de Smart Grid...\n";
+                cout << "Regresando al menu principal...\n";
                 break;
 
             default:
-                cout << "\nError: opcion no valida.\n";
+                cout << "Opcion invalida.\n";
+        }
+
+    } while (opcion != 0);
+}
+
+int main() {
+    Grafo grafo;
+
+    cout << "Iniciando Smart Grid Optimization...\n";
+
+    if (!Persistencia::cargarRed(ARCHIVO_RED, grafo)) {
+        cerr << "ERROR: No se pudo cargar la red electrica.\n";
+        cerr << "Verifique el archivo: " << ARCHIVO_RED << '\n';
+        return 1;
+    }
+
+    cout << "Red electrica cargada correctamente.\n";
+    cout << "Nodos: " << grafo.getCantidadNodos() << '\n';
+    cout << "Conexiones: " << grafo.getCantidadArcos() << '\n';
+
+    int opcion;
+
+    do {
+        mostrarMenu();
+        opcion = leerOpcion();
+
+        switch (opcion) {
+            case 1:
+                menuRed(grafo);
+                break;
+
+            case 2:
+            case 3:
+            case 4:
+            case 5:
+            case 6:
+            case 7:
+                cout << "\nModulo pendiente de implementacion.\n";
+                break;
+
+            case 8:
+                if (Persistencia::guardarRed(ARCHIVO_RED, grafo)) {
+                    cout << "\nDatos guardados correctamente.\n";
+                } else {
+                    cerr << "\nError al guardar los datos.\n";
+                }
+                break;
+
+            case 0:
+                cout << "\nGuardando datos antes de salir...\n";
+
+                if (!Persistencia::guardarRed(ARCHIVO_RED, grafo)) {
+                    cerr << "Error al guardar los datos.\n";
+                    return 1;
+                }
+
+                cout << "Datos guardados correctamente.\n";
+                cout << "Saliendo de Smart Grid...\n";
+                break;
+
+            default:
+                cout << "\nOpcion invalida.\n";
         }
 
     } while (opcion != 0);

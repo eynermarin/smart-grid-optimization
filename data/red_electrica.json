@@ -1,58 +1,58 @@
 {
-    "regiones":  [
-                     {
-                         "nombre":  "Zona Norte",
-                         "puntos_interconexion":  [
-                                                      {
-                                                          "nombre":  "Planta Solar Alpha",
-                                                          "tipo":  "generador"
-                                                      },
-                                                      {
-                                                          "nombre":  "Subestacion Central",
-                                                          "tipo":  "subestacion"
-                                                      }
-                                                  ]
-                     },
-                     {
-                         "nombre":  "Zona Sur",
-                         "puntos_interconexion":  [
-                                                      {
-                                                          "nombre":  "Subestacion Sur",
-                                                          "tipo":  "subestacion"
-                                                      }
-                                                  ]
-                     }
-                 ],
-    "lineas_transmision":  [
-                               {
-                                   "destino":  {
-                                                   "region":  "Zona Norte",
-                                                   "punto":  "Subestacion Central"
-                                               },
-                                   "distancia_km":  45,
-                                   "origen":  {
-                                                  "region":  "Zona Norte",
-                                                  "punto":  "Planta Solar Alpha"
-                                              },
-                                   "tiempo_ms":  10,
-                                   "perdida_porcentaje":  2.5,
-                                   "capacidad_maxima":  100,
-                                   "medio":  "alta_tension"
-                               },
-                               {
-                                   "destino":  {
-                                                   "region":  "Zona Sur",
-                                                   "punto":  "Subestacion Sur"
-                                               },
-                                   "distancia_km":  70,
-                                   "origen":  {
-                                                  "region":  "Zona Norte",
-                                                  "punto":  "Subestacion Central"
-                                              },
-                                   "tiempo_ms":  15,
-                                   "perdida_porcentaje":  3,
-                                   "capacidad_maxima":  80,
-                                   "medio":  "subterraneo"
-                               }
-                           ]
+    "lineas_transmision": [
+        {
+            "capacidad_maxima": 80.0,
+            "destino": {
+                "punto": "Subestacion Sur",
+                "region": "Zona Sur"
+            },
+            "distancia_km": 70.0,
+            "medio": "subterraneo",
+            "origen": {
+                "punto": "Subestacion Central",
+                "region": "Zona Norte"
+            },
+            "perdida_porcentaje": 3.0,
+            "tiempo_ms": 15.0
+        },
+        {
+            "capacidad_maxima": 100.0,
+            "destino": {
+                "punto": "Subestacion Central",
+                "region": "Zona Norte"
+            },
+            "distancia_km": 45.0,
+            "medio": "alta_tension",
+            "origen": {
+                "punto": "Planta Solar Alpha",
+                "region": "Zona Norte"
+            },
+            "perdida_porcentaje": 2.5,
+            "tiempo_ms": 10.0
+        }
+    ],
+    "regiones": [
+        {
+            "nombre": "Zona Norte",
+            "puntos_interconexion": [
+                {
+                    "nombre": "Subestacion Central",
+                    "tipo": "subestacion"
+                },
+                {
+                    "nombre": "Planta Solar Alpha",
+                    "tipo": "generador"
+                }
+            ]
+        },
+        {
+            "nombre": "Zona Sur",
+            "puntos_interconexion": [
+                {
+                    "nombre": "Subestacion Sur",
+                    "tipo": "subestacion"
+                }
+            ]
+        }
+    ]
 }
