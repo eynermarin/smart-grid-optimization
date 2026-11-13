@@ -1,3 +1,4 @@
+#include "OptimizadorTokens.h"
 #include "Beneficios.h"
 #include "Clientes.h"
 #include <iostream>
@@ -161,7 +162,8 @@ bool Clientes::restaurarCliente(
     double consumo,
     long long tokens,
     const vector<string>& subestaciones,
-    const vector<string>& beneficios) {
+    const vector<string>& beneficios,
+    const vector<string>& rutas) {
 
     if (nombre.find_first_not_of(" \t\n\r") == string::npos ||
         !isfinite(consumo) || consumo < 0 || tokens < 0 ||
@@ -185,6 +187,12 @@ bool Clientes::restaurarCliente(
         }
     }
 
+    for (const string& ruta : rutas) {
+        if (ruta.find_first_not_of(" \t\n\r") == string::npos) {
+            return false;
+        }
+    }
+
     if (!agregarCliente(nombre)) {
         return false;
     }
@@ -195,6 +203,7 @@ bool Clientes::restaurarCliente(
     cliente->tokens = tokens;
     cliente->subestacionesConectadas = subestaciones;
     cliente->beneficiosCanjeados = beneficios;
+    cliente->rutasUtilizadas = rutas;
 
     return true;
 }
@@ -237,6 +246,92 @@ bool Clientes::canjearBeneficio(
 
     // Descontar Eco-Tokens solamente si se registro
     cliente->tokens -= beneficio->costoTokens;
+
+    return true;
+}
+
+bool Clientes::registrarRutaOptimizada(
+    const string& nombreCliente,
+    const ResultadoEcoRuta& resultado) {
+
+    Cliente* cliente = buscarInterno(nombreCliente);
+
+    if (cliente == nullptr ||
+        !resultado.encontrada ||
+        resultado.tokens <= 0 ||
+        resultado.ruta.nodos.size() < 2 ||
+        resultado.ruta.arcos.size() + 1 !=
+            resultado.ruta.nodos.size()) {
+        return false;
+    }
+
+    if (cliente->tokens >
+        numeric_limits<long long>::max() - resultado.tokens) {
+        return false;
+    }
+
+    // Verificar que los arcos coincidan con el camino.
+    for (size_t i = 0; i < resultado.ruta.arcos.size(); i++) {
+        const Arco* arco = resultado.ruta.arcos[i];
+
+        if (arco == nullptr ||
+            arco->origen != resultado.ruta.nodos[i] ||
+            arco->destino != resultado.ruta.nodos[i + 1]) {
+            return false;
+        }
+    }
+
+    // Construir identificador de la ruta.
+    string descripcion;
+
+    for (size_t i = 0; i < resultado.ruta.nodos.size(); i++) {
+        const Nodo* nodo = resultado.ruta.nodos[i];
+
+        if (nodo == nullptr) {
+            return false;
+        }
+
+        if (i > 0) {
+            descripcion += " -> ";
+        }
+
+        descripcion += nodo->nombre +
+            " (" + nodo->region + ")";
+    }
+
+    // Preparar los cambios antes de aplicarlos.
+    vector<string> nuevasSubestaciones =
+        cliente->subestacionesConectadas;
+
+    vector<string> nuevoHistorial =
+        cliente->rutasUtilizadas;
+
+    for (const Nodo* nodo : resultado.ruta.nodos) {
+        if (nodo->tipo != "subestacion") {
+            continue;
+        }
+
+        string identificador =
+            nodo->nombre + " (" + nodo->region + ")";
+
+        if (find(
+            nuevasSubestaciones.begin(),
+            nuevasSubestaciones.end(),
+            identificador
+        ) == nuevasSubestaciones.end()) {
+            nuevasSubestaciones.push_back(identificador);
+        }
+    }
+
+    nuevoHistorial.push_back(descripcion);
+
+    // Aplicar los cambios una vez validados.
+    cliente->subestacionesConectadas.swap(
+        nuevasSubestaciones);
+
+    cliente->rutasUtilizadas.swap(nuevoHistorial);
+
+    cliente->tokens += resultado.tokens;
 
     return true;
 }

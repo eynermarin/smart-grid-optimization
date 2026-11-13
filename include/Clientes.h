@@ -5,6 +5,7 @@
 #include <vector>
 
 class Beneficios;
+struct ResultadoEcoRuta;
 
 struct Cliente {
     std::string nombre;
@@ -13,6 +14,8 @@ struct Cliente {
 
     std::vector<std::string> subestacionesConectadas;
     std::vector<std::string> beneficiosCanjeados;
+
+    std::vector<std::string> rutasUtilizadas;
 
     Cliente* siguiente;
 
@@ -45,7 +48,8 @@ public:
         double consumo,
         long long tokens,
         const std::vector<std::string>& subestaciones,
-        const std::vector<std::string>& beneficios
+        const std::vector<std::string>& beneficios,
+        const std::vector<std::string>& rutas = {}
     );
 
     void intercambiar(Clientes& otro);
@@ -53,6 +57,10 @@ public:
         const std::string& nombreCliente,
         const std::string& nombreBeneficio,
         const Beneficios& catalogo
+    );
+    bool registrarRutaOptimizada(
+        const std::string& nombreCliente,
+        const ResultadoEcoRuta& resultado
     );
     int getCantidad() const;
     const Cliente* getPrimero() const;

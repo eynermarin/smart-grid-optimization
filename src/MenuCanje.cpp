@@ -1,4 +1,6 @@
 #include "MenuCanje.h"
+#include "OptimizadorTokens.h"
+#include "Rutas.h"
 
 #include <iostream>
 #include <sstream>
@@ -117,13 +119,98 @@ void realizarCanje(
     }
 }
 
+
+void registrarEcoRuta(Clientes& clientes, const Grafo& grafo) {
+    string clienteNombre;
+    string origen;
+    string regionOrigen;
+    string destino;
+    string regionDestino;
+    string horario;
+    string confirmacion;
+
+    cout << "\n===== OBTENER ECO-TOKENS POR RUTA =====\n";
+
+    if (!leerTexto("Nombre del cliente: ", clienteNombre)) {
+        return;
+    }
+
+    const Cliente* cliente = clientes.buscarCliente(clienteNombre);
+
+    if (cliente == nullptr) {
+        cout << "Cliente no encontrado.\n";
+        return;
+    }
+
+    if (!leerTexto("Nodo origen: ", origen) ||
+        !leerTexto("Region origen: ", regionOrigen) ||
+        !leerTexto("Nodo destino: ", destino) ||
+        !leerTexto("Region destino: ", regionDestino) ||
+        !leerTexto("Horario valle (s/n): ", horario)) {
+        return;
+    }
+
+    if (horario != "s" && horario != "S" &&
+        horario != "n" && horario != "N") {
+        cout << "Horario invalido.\n";
+        return;
+    }
+
+    bool horarioValle = horario == "s" || horario == "S";
+
+    ResultadoEcoRuta resultado =
+        OptimizadorTokens::buscarMejorRuta(
+            grafo,
+            origen, regionOrigen,
+            destino, regionDestino,
+            horarioValle
+        );
+
+    if (!resultado.encontrada) {
+        cout << "No se encontro una ruta valida.\n";
+        return;
+    }
+
+    cout << "\nMEJOR RUTA PARA ECO-TOKENS:\n";
+    Rutas::mostrar({resultado.ruta});
+
+    cout << "Eco-Tokens obtenibles: "
+         << resultado.tokens << '\n';
+
+    cout << "Saldo actual: " << cliente->tokens << '\n';
+
+    if (!leerTexto("Confirmar registro (s/n): ", confirmacion)) {
+        return;
+    }
+
+    if (confirmacion != "s" && confirmacion != "S") {
+        cout << "Registro cancelado.\n";
+        return;
+    }
+
+    if (clientes.registrarRutaOptimizada(clienteNombre, resultado)) {
+        const Cliente* actualizado =
+            clientes.buscarCliente(clienteNombre);
+
+        cout << "Eco-Ruta registrada correctamente.\n";
+        cout << "Eco-Tokens acreditados: "
+             << resultado.tokens << '\n';
+        cout << "Nuevo saldo: "
+             << actualizado->tokens << '\n';
+        cout << "Rutas utilizadas: "
+             << actualizado->rutasUtilizadas.size() << '\n';
+    } else {
+        cout << "No se pudo registrar la Eco-Ruta.\n";
+    }
+}
 } // namespace
 
-void menuCanje(Clientes& clientes, const Beneficios& beneficios) {
+void menuCanje(Clientes& clientes, const Beneficios& beneficios, const Grafo& grafo) {
     while (true) {
         cout << "\n===== ECO-TOKENS Y CANJE =====\n";
         cout << "1. Consultar saldo de un cliente\n";
         cout << "2. Canjear beneficio\n";
+        cout << "3. Obtener Eco-Tokens por ruta optimizada\n";
         cout << "0. Volver al menu principal\n";
 
         int opcion;
@@ -139,6 +226,10 @@ void menuCanje(Clientes& clientes, const Beneficios& beneficios) {
 
             case 2:
                 realizarCanje(clientes, beneficios);
+                break;
+
+            case 3:
+                registrarEcoRuta(clientes, grafo);
                 break;
 
             case 0:

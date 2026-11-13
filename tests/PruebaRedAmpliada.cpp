@@ -26,7 +26,7 @@ int main() {
 
     if (!verificar(
         Persistencia::cargarRed(
-            "data/red_electrica_ampliada_prueba.json", grafo),
+            "data/red_electrica.json", grafo),
         "JSON ampliado cargado correctamente")) {
         return 1;
     }

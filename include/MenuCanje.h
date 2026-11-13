@@ -3,7 +3,8 @@
 
 #include "Clientes.h"
 #include "Beneficios.h"
+#include "Grafo.h"
 
-void menuCanje(Clientes& clientes, const Beneficios& beneficios);
+void menuCanje(Clientes& clientes, const Beneficios& beneficios, const Grafo& grafo);
 
 #endif

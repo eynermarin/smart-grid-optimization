@@ -359,7 +359,7 @@ int main() {
                 break;
 
             case 6:
-                menuCanje(clientes, beneficios);
+                menuCanje(clientes, beneficios, grafo);
                 break;
 
             case 8: {

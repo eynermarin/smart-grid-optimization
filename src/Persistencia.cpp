@@ -192,8 +192,16 @@ bool Persistencia::cargarClientes(
             vector<string> beneficios =
                 item.at("beneficios").get<vector<string>>();
 
+            vector<string> rutas;
+
+            if (item.contains("rutas_utilizadas")) {
+                rutas = item.at("rutas_utilizadas")
+                    .get<vector<string>>();
+            }
+
             if (!temporal.restaurarCliente(
-                nombre, consumo, tokens, subestaciones, beneficios)) {
+                nombre, consumo, tokens,
+                subestaciones, beneficios, rutas)) {
 
                 cerr << "Cliente invalido: " << nombre << endl;
                 return false;
@@ -225,7 +233,8 @@ bool Persistencia::guardarClientes(
                 {"tokens", actual->tokens},
                 {"subestaciones_conectadas",
                     actual->subestacionesConectadas},
-                {"beneficios", actual->beneficiosCanjeados}
+                {"beneficios", actual->beneficiosCanjeados},
+                {"rutas_utilizadas", actual->rutasUtilizadas}
             });
 
             actual = actual->siguiente;
