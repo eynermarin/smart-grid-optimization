@@ -107,11 +107,27 @@ void ReporteClientes::mostrarTodos(
     }
 
     const Cliente* actual = clientes.getPrimero();
+    int clientesConHistorial = 0;
 
     while (actual != nullptr) {
-        cout << "\n-----------------------------------\n";
-        mostrarDetalle(*actual);
+        bool tieneHistorial =
+            !actual->rutasUtilizadas.empty() ||
+            !actual->beneficiosCanjeados.empty();
+
+        if (tieneHistorial) {
+            cout << "\n-----------------------------------\n";
+            mostrarDetalle(*actual);
+            clientesConHistorial++;
+        }
+
         actual = actual->siguiente;
+    }
+
+    cout << "\nClientes con historial: "
+         << clientesConHistorial << '\n';
+
+    if (clientesConHistorial == 0) {
+        cout << "No hay clientes con historial registrado.\n";
     }
 }
 

@@ -57,6 +57,7 @@ void menuReportes(
         cout << "4. Ranking de rutas utilizadas\n";
         cout << "5. Rutas mas utilizadas\n";
         cout << "6. Rutas menos utilizadas\n";
+        cout << "7. Rutas utilizadas una sola vez\n";
         cout << "0. Volver al menu principal\n";
 
         int opcion;
@@ -77,7 +78,7 @@ void menuReportes(
                 break;
 
             case 3:
-                ReportesRed::mostrarNodosInactivos(grafo);
+                ReportesRed::mostrarNodosSinClientes(grafo, clientes);
                 break;
 
             case 4:
@@ -90,6 +91,10 @@ void menuReportes(
 
             case 6:
                 ReporteRutas::mostrarMenosUtilizadas(clientes);
+                break;
+
+            case 7:
+                ReporteRutas::mostrarRutasUnicas(clientes);
                 break;
 
             case 0:

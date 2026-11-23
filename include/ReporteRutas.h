@@ -28,6 +28,10 @@ public:
     static void mostrarMenosUtilizadas(
         const Clientes& clientes
     );
+
+    static void mostrarRutasUnicas(
+        const Clientes& clientes
+    );
 };
 
 #endif

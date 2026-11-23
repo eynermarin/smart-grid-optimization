@@ -132,3 +132,30 @@ void ReporteRutas::mostrarMenosUtilizadas(
         }
     }
 }
+
+void ReporteRutas::mostrarRutasUnicas(
+    const Clientes& clientes) {
+
+    cout << "\n===== RUTAS UTILIZADAS UNA SOLA VEZ =====\n";
+
+    vector<FrecuenciaRuta> frecuencias =
+        calcularFrecuencias(clientes);
+
+    int encontradas = 0;
+
+    for (const FrecuenciaRuta& ruta : frecuencias) {
+        if (ruta.usos == 1) {
+            encontradas++;
+
+            cout << "Ruta: " << ruta.recorrido << '\n';
+            cout << "Usos: " << ruta.usos << '\n';
+        }
+    }
+
+    cout << "Total de rutas unicas: "
+         << encontradas << '\n';
+
+    if (encontradas == 0) {
+        cout << "No existen rutas utilizadas una sola vez.\n";
+    }
+}
