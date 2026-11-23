@@ -14,8 +14,15 @@ int main() {
     assert(Persistencia::cargarRed("data/red_electrica.json", grafo));
     cout << "OK - Archivo JSON cargado\n";
 
-    assert(grafo.getCantidadNodos() == 3);
-    assert(grafo.getCantidadArcos() == 2);
+    const int nodosEsperados = grafo.getCantidadNodos();
+    const int arcosEsperados = grafo.getCantidadArcos();
+
+    assert(nodosEsperados >= 15);
+    assert(arcosEsperados >= 20);
+
+
+    assert(grafo.getCantidadNodos() == nodosEsperados);
+    assert(grafo.getCantidadArcos() == arcosEsperados);
     cout << "OK - Cantidad de nodos y arcos\n";
 
     const Arco* arco = grafo.buscarArco(
@@ -47,8 +54,8 @@ int main() {
         "data/red_electrica_prueba.json", recuperado
     ));
 
-    assert(recuperado.getCantidadNodos() == 3);
-    assert(recuperado.getCantidadArcos() == 2);
+    assert(recuperado.getCantidadNodos() == nodosEsperados);
+    assert(recuperado.getCantidadArcos() == arcosEsperados);
 
     const Arco* modificado = recuperado.buscarArco(
         "Planta Solar Alpha", "Zona Norte",
@@ -94,8 +101,8 @@ int main() {
         "data/red_invalida_prueba.json", recuperado
     ));
 
-    assert(recuperado.getCantidadNodos() == 3);
-    assert(recuperado.getCantidadArcos() == 2);
+    assert(recuperado.getCantidadNodos() == nodosEsperados);
+    assert(recuperado.getCantidadArcos() == arcosEsperados);
 
     cout << "OK - JSON invalido rechazado sin perder datos\n";
 

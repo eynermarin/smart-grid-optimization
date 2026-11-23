@@ -91,6 +91,7 @@ int main() {
     streambuf* original = cout.rdbuf(captura.rdbuf());
 
     ReporteClientes::mostrarTodos(clientes);
+    const string salidaGeneral = captura.str();
     bool encontrado = ReporteClientes::mostrarHistorial(
         clientes, "Hospital General");
 
@@ -111,10 +112,11 @@ int main() {
     }
 
     if (!verificar(
-        salida.find("Hospital General") != string::npos &&
-        salida.find("Escuela Central") != string::npos &&
-        salida.find("Comercio Local") != string::npos,
-        "Se muestran todos los clientes")) {
+        salidaGeneral.find("Cliente: Hospital General") != string::npos &&
+        salidaGeneral.find("Cliente: Escuela Central") == string::npos &&
+        salidaGeneral.find("Cliente: Comercio Local") == string::npos &&
+        salidaGeneral.find("Clientes con historial: 1") != string::npos,
+        "Solo se muestran clientes con historial")) {
         return 1;
     }
 

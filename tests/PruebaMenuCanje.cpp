@@ -11,6 +11,7 @@ int main() {
 
     Clientes clientes;
     Beneficios beneficios;
+    Grafo grafo;
 
     if (!clientes.agregarCliente("Hospital General") ||
         !clientes.asignarTokens("Hospital General", 150) ||
@@ -38,7 +39,7 @@ int main() {
     streambuf* entradaOriginal = cin.rdbuf(entrada.rdbuf());
     streambuf* salidaOriginal = cout.rdbuf(salida.rdbuf());
 
-    menuCanje(clientes, beneficios);
+    menuCanje(clientes, beneficios, grafo);
 
     cin.rdbuf(entradaOriginal);
     cout.rdbuf(salidaOriginal);
